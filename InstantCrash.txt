@@ -1,0 +1,25 @@
+-- Não me responsabilizo por banimentos ou qualquer punição ocasionada pelo uso dele.
+
+local items = {1, 2, 3} -- IDs dos itens disponíveis para spawn
+local spawnInterval = 0.02 -- Intervalo de tempo em segundos entre os spawns (agora definido como 0.02)
+local spawnArea = {x = 0, y = 0, width = 800, height = 400} -- Área de spawn dos itens
+
+-- Função para spawnar os itens
+local function spawnItems()
+    for i = 1, 5000 do -- Spawn de 50 itens por segundo - Mude o numero 200 para o que você preferir, mais de 50 por segundo causa DISCONNECT imediato.
+        local itemID = items[math.random(#items)]
+        local posX = math.random(spawnArea.x, spawnArea.x + spawnArea.width)
+        local posY = math.random(spawnArea.y, spawnArea.y + spawnArea.height)
+        
+        tfm.exec.addShamanObject(itemID, posX, posY)
+    end
+end
+
+-- Função chamada quando o script é iniciado
+function eventLoop()
+    spawnItems()
+    system.newTimer(spawnInterval * 1000, true, spawnItems) -- Cria um novo timer para spawnar os itens a cada intervalo de tempo definido
+end
+
+-- Registra o evento
+tfm.exec.newGame = eventLoop
